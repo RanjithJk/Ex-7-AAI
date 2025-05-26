@@ -17,12 +17,52 @@ Step 5: Construct the main program to read the paragraph  and perform text summa
       - Generate and print the original text.<br>
       - Generate and print the text summary using the  Text Summarization function<br>
 <H3>Program:</H3>
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize,sent_tokenize
+from nltk.stem import PorterStemmer
+nltk.download( 'punkt' )
+nltk.download( 'stopwords' )
 
-Insert your code here
+def preprocess_text(text):
+
+ # Tokenize the text into words
+	words = word_tokenize(text)
+
+ # Remove stopwords and punctuation
+	Swords= set(stopwords.words('english'))
+	Fwords=[w for w in words if w.lower()not in Swords and w.isalnum()]
+
+ # Stemming
+	stemmer = PorterStemmer()
+	SMwords= [stemmer.stem(word) for words in Fwords]
+	return SMwords
+
+ def generate_summary(text,num_sentences=3):
+	S= sent_tokenize(text)
+	PreText = preprocess_text(text)
+
+ # Calculate the frequency of each word
+	WordFre=nltk.FreqDist(PreText)
+
+ # Calculate the score for each sentence based on word frequency
+	scores={}
+	for i in S:
+		for word,freq in WordFre.items():
+			if word in i.lower():
+				if i not in scores:
+					scores[i]=freq
+				else:
+					scores[i]+= freq
+
+# Select top N sentences with highest scores
+	summary=sorted(scores,key=scores.get,reverse=True)[:num_sentences]
+
+	return ' '. join(summary)
+
 
 <H3>Output</H3>
-
-Show your results here
+"C:\Users\acer\Pictures\Screenshots\Screenshot 2025-05-26 175812.png"
 
 <H3>Result:</H3>
 Thus ,the program to perform the Text summarization is executed sucessfully.
